@@ -1,24 +1,32 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 
 namespace TicTacToe
 {
     public class Position
     {
+        public Position(int x, int y)
+        {
+            X = x;
+            Y = y;
+        }
+
         public int X {get; set;}
         public int Y {get; set;}
     }
 
     public class Tile
     {
-        private readonly Position _position = new Position();
-        public char Symbol {get; set;}
-
-        public Position Position
+        public Tile(Position position, char symbol)
         {
-            get { return _position; }
+            Position = position;
+            Symbol = symbol;
         }
+        public Position Position {get; set;}
+        public char Symbol {get; set;}
+        
     }
 
     public class Board
@@ -31,24 +39,17 @@ namespace TicTacToe
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    _plays.Add(new Tile{ Position = { X = i, Y = j}, Symbol = ' '});
+                    _plays.Add(new Tile (new Position(i, j), ' '));
                 }  
             }       
         }
-       public Tile TileAt(int x, int y)
+       public Tile TileAt(Position position)
        {
-           return _plays.Single(tile => tile.Position.X == x && tile.Position.Y == y);
+           return _plays.Single(tile => tile.Position.X == position.X && tile.Position.Y == position.Y);
        }
 
        public void AddTileAt(char symbol, int x, int y)
        {
-           var newTile = new Tile
-           {
-              Position = { X = x,
-               Y = y },
-               Symbol = symbol
-           };
-
            _plays.Single(tile => tile.Position.X == x && tile.Position.Y == y).Symbol = symbol;
        }
     }
@@ -75,7 +76,7 @@ namespace TicTacToe
                 throw new Exception("Invalid next player");
             }
             //if not first move but play on an already played tile
-            else if (_board.TileAt(x, y).Symbol != ' ')
+            else if (_board.TileAt(new Position(x,y)).Symbol != ' ')
             {
                 throw new Exception("Invalid position");
             }
@@ -87,47 +88,47 @@ namespace TicTacToe
 
         public char Winner()
         {   //if the positions in first row are taken
-            if(_board.TileAt(0, 0).Symbol != ' ' &&
-               _board.TileAt(0, 1).Symbol != ' ' &&
-               _board.TileAt(0, 2).Symbol != ' ')
+            if(_board.TileAt(new Position(0,0)).Symbol != ' ' &&
+               _board.TileAt(new Position(0,1)).Symbol != ' ' &&
+               _board.TileAt(new Position(0,2)).Symbol != ' ')
                {
                     //if first row is full with same symbol
-                    if (_board.TileAt(0, 0).Symbol == 
-                        _board.TileAt(0, 1).Symbol &&
-                        _board.TileAt(0, 2).Symbol == 
-                        _board.TileAt(0, 1).Symbol )
+                    if (_board.TileAt(new Position(0,0)).Symbol == 
+                        _board.TileAt(new Position(0,1)).Symbol &&
+                        _board.TileAt(new Position(0,2)).Symbol == 
+                        _board.TileAt(new Position(0,1)).Symbol )
                         {
-                            return _board.TileAt(0, 0).Symbol;
+                            return _board.TileAt(new Position(0,0)).Symbol;
                         }
                }
                 
              //if the positions in first row are taken
-             if(_board.TileAt(1, 0).Symbol != ' ' &&
-                _board.TileAt(1, 1).Symbol != ' ' &&
-                _board.TileAt(1, 2).Symbol != ' ')
+             if(_board.TileAt(new Position(1,0)).Symbol != ' ' &&
+                _board.TileAt(new Position(1,1)).Symbol != ' ' &&
+                _board.TileAt(new Position(1,2)).Symbol != ' ')
                 {
                     //if middle row is full with same symbol
-                    if (_board.TileAt(1, 0).Symbol == 
-                        _board.TileAt(1, 1).Symbol &&
-                        _board.TileAt(1, 2).Symbol == 
-                        _board.TileAt(1, 1).Symbol)
+                    if (_board.TileAt(new Position(1,0)).Symbol == 
+                        _board.TileAt(new Position(1,1)).Symbol &&
+                        _board.TileAt(new Position(1,2)).Symbol == 
+                        _board.TileAt(new Position(1,1)).Symbol)
                         {
-                            return _board.TileAt(1, 0).Symbol;
+                            return _board.TileAt(new Position(1,0)).Symbol;
                         }
                 }
 
             //if the positions in first row are taken
-             if(_board.TileAt(2, 0).Symbol != ' ' &&
-                _board.TileAt(2, 1).Symbol != ' ' &&
-                _board.TileAt(2, 2).Symbol != ' ')
+             if(_board.TileAt(new Position(2,0)).Symbol != ' ' &&
+                _board.TileAt(new Position(2,1)).Symbol != ' ' &&
+                _board.TileAt(new Position(2,2)).Symbol != ' ')
                 {
                     //if middle row is full with same symbol
-                    if (_board.TileAt(2, 0).Symbol == 
-                        _board.TileAt(2, 1).Symbol &&
-                        _board.TileAt(2, 2).Symbol == 
-                        _board.TileAt(2, 1).Symbol)
+                    if (_board.TileAt(new Position(2,0)).Symbol == 
+                        _board.TileAt(new Position(2,1)).Symbol &&
+                        _board.TileAt(new Position(2,2)).Symbol == 
+                        _board.TileAt(new Position(2,1)).Symbol)
                         {
-                            return _board.TileAt(2, 0).Symbol;
+                            return _board.TileAt(new Position(2,0)).Symbol;
                         }
                 }
 

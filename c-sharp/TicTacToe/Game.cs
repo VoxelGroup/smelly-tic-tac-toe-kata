@@ -43,7 +43,7 @@ namespace TicTacToe
                 }  
             }       
         }
-       public Tile TileAt(Position position)
+        public Tile TileAt(Position position)
        {
            return _plays.Single(tile => tile.Position.X == position.X && tile.Position.Y == position.Y);
        }
@@ -51,6 +51,11 @@ namespace TicTacToe
        public void AddTileAt(char symbol, int x, int y)
        {
            _plays.Single(tile => tile.Position.X == x && tile.Position.Y == y).Symbol = symbol;
+       }
+
+       public char FindSymbol(Position position)
+       {
+            return TileAt(position).Symbol;
        }
     }
 
@@ -76,7 +81,7 @@ namespace TicTacToe
                 throw new Exception("Invalid next player");
             }
             //if not first move but play on an already played tile
-            else if (_board.TileAt(new Position(x,y)).Symbol != ' ')
+            else if (_board.FindSymbol(new Position(x, y)) != ' ') 
             {
                 throw new Exception("Invalid position");
             }

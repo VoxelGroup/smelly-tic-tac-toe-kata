@@ -4,11 +4,21 @@ using System.Collections.Generic;
 
 namespace TicTacToe
 {
-    public class Tile
+    public class Position
     {
         public int X {get; set;}
         public int Y {get; set;}
+    }
+
+    public class Tile
+    {
+        private readonly Position _position = new Position();
         public char Symbol {get; set;}
+
+        public Position Position
+        {
+            get { return _position; }
+        }
     }
 
     public class Board
@@ -21,25 +31,25 @@ namespace TicTacToe
             {
                 for (int j = 0; j < 3; j++)
                 {
-                    _plays.Add(new Tile{ X = i, Y = j, Symbol = ' '});
+                    _plays.Add(new Tile{ Position = { X = i, Y = j}, Symbol = ' '});
                 }  
             }       
         }
        public Tile TileAt(int x, int y)
        {
-           return _plays.Single(tile => tile.X == x && tile.Y == y);
+           return _plays.Single(tile => tile.Position.X == x && tile.Position.Y == y);
        }
 
        public void AddTileAt(char symbol, int x, int y)
        {
            var newTile = new Tile
            {
-               X = x,
-               Y = y,
+              Position = { X = x,
+               Y = y },
                Symbol = symbol
            };
 
-           _plays.Single(tile => tile.X == x && tile.Y == y).Symbol = symbol;
+           _plays.Single(tile => tile.Position.X == x && tile.Position.Y == y).Symbol = symbol;
        }
     }
 
